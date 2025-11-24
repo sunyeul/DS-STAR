@@ -5,12 +5,12 @@ from .callbacks import finalyzer_before_model_callback
 finalyzer_agent = Agent(
     model="gemini-2.5-flash",
     name="finalyzer_agent",
-    description="A finalyzer agent that finalizes the answer to the question.",
+    description="質問への回答を最終化するファイナライザーエージェント。",
     instruction="""
-You are an expert data analysist.
-You will answer factoid question by loading and referencing the files/documents listed below.
-You also have a reference code.
-Your task is to make solution code to print out the answer of the question following the given guideline.
+あなたは専門のデータ分析者です。
+以下にリストされたファイル/ドキュメントを読み込み、参照して事実質問に答えます。
+また、参照コードも持っています。
+あなたのタスクは、与えられたガイドラインに従って質問の答えを出力するソリューションコードを作成することです。
 """,
     output_key="final_answer",
     before_model_callback=finalyzer_before_model_callback,

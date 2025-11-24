@@ -24,7 +24,7 @@ class DSStarAgent(BaseAgent):
     router_agent: Agent
 
     finalyzer_agent: Agent
-    # workflow agent
+    # ワークフローエージェント
     loop_agent: LoopAgent
 
     def __init__(
@@ -57,44 +57,44 @@ class DSStarAgent(BaseAgent):
             verifier_agent=verifier_agent,
             router_agent=router_agent,
             finalyzer_agent=finalyzer_agent,
-            # workflow
+            # ワークフロー
             loop_agent=loop_agent,
         )
 
     async def _run_async_impl(
         self, ctx: InvocationContext
     ) -> AsyncGenerator[Event, None]:
-        print("Running DSStarAgent")
+        print("DSStarAgentを実行中")
         ctx.user_content
         state = ctx.session.state
 
-        # Analyzing data files
+        # データファイルの分析
         for file in paths_config.data_dir.glob("*"):
-            print(f"Analyzing file: {file.name}")
+            print(f"ファイルを分析中: {file.name}")
             state["filename"] = file.name
             async for event in self.analyzer_agent.run_async(ctx):
                 yield event
 
-        # Planning the initial step
+        # 初期ステップの計画
         async for event in self.planner_agent.run_async(ctx):
             yield event
 
-        # Coding the initial step
+        # 初期ステップのコーディング
         async for event in self.coder_agent.run_async(ctx):
             yield event
 
-        # Running the loop
+        # ループの実行
         async for event in self.loop_agent.run_async(ctx):
             yield event
 
-        # Finalizing the answer
+        # 回答の最終化
         async for event in self.finalyzer_agent.run_async(ctx):
             yield event
 
 
 ds_star_agent = DSStarAgent(
     name="ds_star_agent",
-    description="A DSStar agent that analyzes the data and plans the next step to answer the question.",
+    description="データを分析し、質問に答えるための次のステップを計画するDSStarエージェント。",
     analyzer_agent=analyzer_agent,
     planner_agent=planner_agent,
     coder_agent=coder_agent,

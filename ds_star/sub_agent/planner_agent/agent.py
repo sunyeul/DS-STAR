@@ -13,7 +13,7 @@ from .callbacks import (
 
 class PlannerAgent(BaseAgent):
     """
-    초기 계획과 후속 계획 수립을 동적으로 처리하는 통합 플래너 에이전트.
+    初期計画と後続計画の策定を動的に処理する統合プランナーエージェント。
     """
 
     initial_agent: Agent
@@ -22,11 +22,11 @@ class PlannerAgent(BaseAgent):
     def __init__(self, name: str = "planner_agent"):
         initial_agent = Agent(
             model="gemini-2.5-flash",
-            name="initial_planner_impl",  # 내부 식별용 이름 변경
-            description="An initial planner agent that plans the first step.",
+            name="initial_planner_impl",  # 内部識別用の名前
+            description="最初のステップを計画する初期プランナーエージェント。",
             instruction="""
-            You are an expert data analyst.
-            In order to answer factoid questions based on the given data, you have to first plan effectively.
+            あなたは専門のデータ分析者です。
+            与えられたデータに基づいて事実質問に答えるためには、まず効果的に計画を立てる必要があります。
             """,
             output_key="current_plan",
             before_model_callback=initial_planner_before_model_callback,
@@ -35,12 +35,12 @@ class PlannerAgent(BaseAgent):
 
         next_step_agent = Agent(
             model="gemini-2.5-flash",
-            name="planner_impl",  # 내부 식별용 이름 변경
-            description="A planner agent that plans the next step.",
+            name="planner_impl",  # 内部識別用の名前
+            description="次のステップを計画するプランナーエージェント。",
             instruction="""
-            You are an expert data analyst.
-            In order to answer factoid questions based on the given data, you have to first plan effectively.
-            Your task is to suggest next plan to do to answer the question.
+            あなたは専門のデータ分析者です。
+            与えられたデータに基づいて事実質問に答えるためには、まず効果的に計画を立てる必要があります。
+            あなたのタスクは、質問に答えるために次に行うべき計画を提案することです。
             """,
             output_key="current_plan",
             before_model_callback=planner_before_model_callback,
@@ -54,7 +54,7 @@ class PlannerAgent(BaseAgent):
         self, ctx: InvocationContext
     ) -> AsyncGenerator[Event, None]:
         """
-        현재 세션 상태(계획 존재 여부)를 확인하여 적절한 에이전트에게 실행을 위임합니다.
+        現在のセッション状態（計画の存在有無）を確認し、適切なエージェントに実行を委譲します。
         """
         plans = ctx.session.state.get("plans", [])
 

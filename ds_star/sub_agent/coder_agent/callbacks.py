@@ -15,7 +15,7 @@ paths_config = PathsConfig()
 
 
 def _run_temp_python(code: str) -> str:
-    # temp 파일을 먼저 완전히 닫은 뒤 실행
+    # 一時ファイルを完全に閉じてから実行
     with tempfile.NamedTemporaryFile(
         mode="w",
         delete=False,
@@ -60,18 +60,18 @@ def initial_coder_before_model_callback(
     current_plan = state.get("current_plan")
 
     parts = [
-        types.Part(text=f"# Given data: {data_descriptions.keys()}"),
+        types.Part(text=f"# 与えられたデータ: {data_descriptions.keys()}"),
     ]
     for filename, summary in data_descriptions.items():
         parts.append(types.Part(text=f"{filename}\n{summary}\n"))
-    parts.append(types.Part(text=f"# Current plan\n{current_plan}\n"))
+    parts.append(types.Part(text=f"# 現在の計画\n{current_plan}\n"))
     parts.append(
         types.Part(
             text="""
-# Your task
-- Implement the plan with the given data.
-- Your response should be a single markdown Python code (wrapped in ```).
-- There should be no additional headings or text in your response.
+# あなたのタスク
+- 与えられたデータで計画を実装してください。
+- 応答は単一のマークダウンPythonコード（```で囲まれたもの）である必要があります。
+- 応答に追加の見出しやテキストを含めないでください。
 """
         )
     )
@@ -92,22 +92,22 @@ def coder_before_model_callback(
     current_plan = state.get("current_plan")
 
     parts = [
-        types.Part(text=f"# Given data: {data_descriptions.keys()}"),
+        types.Part(text=f"# 与えられたデータ: {data_descriptions.keys()}"),
     ]
     for filename, summary in data_descriptions.items():
         parts.append(types.Part(text=f"{filename}\n{summary}\n"))
-    parts.append(types.Part(text=f"# Base code\n```python\n{base_code}\n```\n"))
-    parts.append(types.Part(text="# Previous plans"))
+    parts.append(types.Part(text=f"# ベースコード\n```python\n{base_code}\n```\n"))
+    parts.append(types.Part(text="# 以前の計画"))
     for i, plan in enumerate(previous_plans, start=1):
         parts.append(types.Part(text=f"{i}. {plan}\n"))
-    parts.append(types.Part(text=f"# Current plan to implement\n{current_plan}\n"))
+    parts.append(types.Part(text=f"# 実装する現在の計画\n{current_plan}\n"))
     parts.append(
         types.Part(
             text="""
-# Your task
-- Implement the current plan with the given data.
-- Your response should be a single markdown Python code (wrapped in ```).
-- There should be no additional headings or text in your response.
+# あなたのタスク
+- 与えられたデータで現在の計画を実装してください。
+- 応答は単一のマークダウンPythonコード（```で囲まれたもの）である必要があります。
+- 応答に追加の見出しやテキストを含めないでください。
 """
         )
     )

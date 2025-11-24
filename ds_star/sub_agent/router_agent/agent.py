@@ -6,10 +6,10 @@ from .models import RouterOutput
 router_agent = Agent(
     model="gemini-2.5-flash",
     name="router_agent",
-    description="A router agent that routes the question to the appropriate agent.",
+    description="質問を適切なエージェントにルーティングするルーターエージェント。",
     instruction="""
-You are an expert data analysist.
-Since current plan is insufficient to answer the question, your task is to decide how to refine the plan to answer the question.
+あなたは専門のデータ分析者です。
+現在の計画では質問に答えるのに不十分なため、あなたのタスクは質問に答えるために計画をどのように改善するかを決定することです。
 """,
     output_key="router_output",
     output_schema=RouterOutput,

@@ -14,7 +14,7 @@ paths_config = PathsConfig()
 
 
 def _run_temp_python(code: str) -> str:
-    # temp 파일을 먼저 완전히 닫은 뒤 실행
+    # 一時ファイルを完全に閉じてから実行
     with tempfile.NamedTemporaryFile(
         mode="w",
         delete=False,

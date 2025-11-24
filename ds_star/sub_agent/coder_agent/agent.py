@@ -18,7 +18,7 @@ paths_config = PathsConfig()
 
 class CoderAgent(BaseAgent):
     """
-    초기 코드 생성과 후속 코드 수정을 동적으로 처리하는 통합 코더 에이전트.
+    初期コード生成と後続コード修正を動的に処理する統合コーダーエージェント。
     """
 
     initial_agent: Agent
@@ -27,8 +27,8 @@ class CoderAgent(BaseAgent):
     def __init__(self, name: str = "coder_agent"):
         initial_agent = Agent(
             model="gemini-2.5-flash",
-            name="initial_coder_impl",  # 내부 식별용 이름
-            description="An initial coder agent that codes the first step.",
+            name="initial_coder_impl",  # 内部識別用の名前
+            description="最初のステップをコーディングする初期コーダーエージェント。",
             output_key="base_code",
             output_schema=ExecutableCode,
             disallow_transfer_to_parent=True,
@@ -39,11 +39,11 @@ class CoderAgent(BaseAgent):
 
         next_step_agent = Agent(
             model="gemini-2.5-flash",
-            name="coder_impl",  # 내부 식별용 이름
-            description="A coder agent that codes the next step.",
+            name="coder_impl",  # 内部識別用の名前
+            description="次のステップをコーディングするコーダーエージェント。",
             instruction="""
-            You are an expert data analysist.
-            Your task is to implement the current plan with the given data.
+            あなたは専門のデータ分析者です。
+            あなたのタスクは、与えられたデータで現在の計画を実装することです。
             """,
             output_key="base_code",
             output_schema=ExecutableCode,
@@ -60,7 +60,7 @@ class CoderAgent(BaseAgent):
         self, ctx: InvocationContext
     ) -> AsyncGenerator[Event, None]:
         """
-        현재 세션 상태(이전 코드 존재 여부)를 확인하여 적절한 에이전트에게 실행을 위임합니다.
+        現在のセッション状態（以前のコードの存在有無）を確認し、適切なエージェントに実行を委譲します。
         """
 
         current_code = ctx.session.state.get("base_code")

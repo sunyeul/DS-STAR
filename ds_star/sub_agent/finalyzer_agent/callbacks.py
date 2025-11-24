@@ -15,25 +15,25 @@ def finalyzer_before_model_callback(
     result = state.get("result")
 
     parts = [
-        types.Part(text=f"# Question\n{question}"),
+        types.Part(text=f"# 質問\n{question}"),
     ]
 
-    parts.append(types.Part(text=f"# Given data: {data_descriptions.keys()}"))
+    parts.append(types.Part(text=f"# 与えられたデータ: {data_descriptions.keys()}"))
     for filename, summary in data_descriptions.items():
         parts.append(types.Part(text=f"{filename}\n{summary}\n"))
-    parts.append(types.Part(text=f"# Reference code\n```python\n{base_code}\n```\n"))
-    parts.append(types.Part(text=f"#  Execution result of reference code\n{result}\n"))
+    parts.append(types.Part(text=f"# 参照コード\n```python\n{base_code}\n```\n"))
+    parts.append(types.Part(text=f"# 参照コードの実行結果\n{result}\n"))
 
     parts.append(
         types.Part(
-            text="""# Your task
-- Modify the solution code to print out answer to follow the give guidelines.
-- If the answer can be obtained from the execution result of the reference code, just generate a Python code that prints out the desired answer.
-- The code should be a single-file Python program that is self-contained and can be executed as-is.
-- Your response should only contain a single code block.
-- Do not include dummy contents since we will debug if error occurs.
-- Do not use try: and except: to prevent error. I will debug it later.
-- All files/documents are in `data/` directory.
+            text="""# あなたのタスク
+- 与えられたガイドラインに従って答えを出力するようにソリューションコードを修正してください。
+- 答えが参照コードの実行結果から得られる場合は、希望する答えを出力するPythonコードを生成してください。
+- コードは単一ファイルのPythonプログラムで、自己完結型であり、そのまま実行可能である必要があります。
+- 応答には単一のコードブロックのみを含めてください。
+- エラーが発生した場合にデバッグするため、ダミーの内容を含めないでください。
+- エラーを防ぐためにtry:とexcept:を使用しないでください。後でデバッグします。
+- すべてのファイル/ドキュメントは`data/`ディレクトリにあります。
 """
         )
     )

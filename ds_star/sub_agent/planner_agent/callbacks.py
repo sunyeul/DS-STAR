@@ -13,18 +13,18 @@ def initial_planner_before_model_callback(
     data_descriptions = state.get("data_descriptions")
 
     parts = [
-        types.Part(text="# Question"),
+        types.Part(text="# 質問"),
         types.Part(text=question),
-        types.Part(text=f"# Given data: {data_descriptions.keys()}"),
+        types.Part(text=f"# 与えられたデータ: {data_descriptions.keys()}"),
     ]
     for filename, summary in data_descriptions.items():
         parts.append(types.Part(text=f"{filename}\n{summary}\n"))
     parts.append(
         types.Part(
-            text="""# Your task
-- Suggest your very first step to answer the question above.
-- Your first step does not need to be sufficient to answer the question.
-- Just propose a very simple initial step, which can act as a good starting point to answer the question.
+            text="""# あなたのタスク
+- 上記の質問に答えるための最初のステップを提案してください。
+- 最初のステップは質問に答えるのに十分である必要はありません。
+- 質問に答えるための良い出発点となる、非常にシンプルな初期ステップを提案してください。
 """
         )
     )
@@ -48,27 +48,27 @@ def planner_before_model_callback(
     result = state.get("result")
 
     parts = [
-        types.Part(text="# Question"),
+        types.Part(text="# 質問"),
         types.Part(text=question),
     ]
 
     for filename, summary in data_descriptions.items():
         parts.append(types.Part(text=f"{filename}\n{summary}\n"))
 
-    parts.append(types.Part(text="# Current plans"))
+    parts.append(types.Part(text="# 現在の計画"))
     for i, plan in enumerate(plans, start=1):
         parts.append(types.Part(text=f"{i}. {plan}\n"))
 
-    parts.append(types.Part(text="# Obtained results from the current plans:"))
+    parts.append(types.Part(text="# 現在の計画から得られた結果:"))
     parts.append(types.Part(text=result))
 
     parts.append(
         types.Part(
-            text="""# Your task
-- Suggest your next step to answer the question above.
-- Your next step does not need to be sufficient to answer the question, but if it requires only final simple last step you may suggest it.
-- Just propose a very simple next step, which can act as a good intermediate point to answer the question.
-- Of course your response can be a plan which could directly answer the question.
+            text="""# あなたのタスク
+- 上記の質問に答えるための次のステップを提案してください。
+- 次のステップは質問に答えるのに十分である必要はありませんが、最後のシンプルなステップのみが必要な場合は、それを提案しても構いません。
+- 質問に答えるための良い中間地点となる、非常にシンプルな次のステップを提案してください。
+- もちろん、あなたの応答は質問に直接答えることができる計画でも構いません。
 """
         )
     )

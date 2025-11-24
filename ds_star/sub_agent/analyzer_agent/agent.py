@@ -7,25 +7,25 @@ from .models import ExecutableCode
 
 paths_config = PathsConfig()
 
-# Agent Definition
+# エージェント定義
 analyzer_agent = LlmAgent(
     name="analyzer_agent",
     model="gemini-2.5-flash",
     instruction="""
-You are an expert data analysist.
-Generate a Python code that loads and describes the content of {filename}.
+あなたは専門のデータ分析者です。
+{filename}の内容を読み込み、説明するPythonコードを生成してください。
 
-# Requirement
-- The file can both unstructured or structured data.
-- If there are too many structured data, print out just few examples.
-- Print out essential informations. For example, print out all the column names.
-- The Python code should print out the content of {filename}.
-- The code should be a single-file Python program that is self-contained and can be executed as-is.
-- Your response should only contain a single code block.
-- Important: You should not include dummy contents since we will debug if error occurs.
-- Do not use try: and except: to prevent error. I will debug it later.
+# 要件
+- ファイルは構造化データまたは非構造化データのいずれでも可能です。
+- 構造化データが多すぎる場合は、数例のみを出力してください。
+- 重要な情報を出力してください。例えば、すべての列名を出力してください。
+- Pythonコードは{filename}の内容を出力する必要があります。
+- コードは単一ファイルのPythonプログラムで、自己完結型であり、そのまま実行可能である必要があります。
+- 応答には単一のコードブロックのみを含めてください。
+- 重要: エラーが発生した場合にデバッグするため、ダミーの内容を含めないでください。
+- エラーを防ぐためにtry:とexcept:を使用しないでください。後でデバッグします。
     """,
-    description="Analyzes the content of a file and generates a Python code to describe the content.",
+    description="ファイルの内容を分析し、内容を説明するPythonコードを生成します。",
     output_key="executable_code",
     output_schema=ExecutableCode,
     disallow_transfer_to_parent=True,
