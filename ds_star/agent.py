@@ -7,9 +7,9 @@ from google.adk.events import Event
 from config import PathsConfig
 
 from .sub_agent.analyzer_agent import analyzer_agent
-from .sub_agent.coder_agent import coder_agent, initial_coder_agent
+from .sub_agent.coder_agent import coder_agent
 from .sub_agent.finalyzer_agent import finalyzer_agent
-from .sub_agent.planner_agent import initial_planner_agent, planner_agent
+from .sub_agent.planner_agent import planner_agent
 from .sub_agent.router_agent import router_agent
 from .sub_agent.verifier_agent import verifier_agent
 
@@ -18,12 +18,11 @@ paths_config = PathsConfig()
 
 class DSStarAgent(BaseAgent):
     analyzer_agent: Agent
-    initial_planner_agent: Agent
-    initial_coder_agent: Agent
+    planner_agent: BaseAgent
+    coder_agent: BaseAgent
     verifier_agent: Agent
     router_agent: Agent
-    planner_agent: Agent
-    coder_agent: Agent
+
     finalyzer_agent: Agent
     # workflow agent
     loop_agent: LoopAgent
@@ -33,12 +32,10 @@ class DSStarAgent(BaseAgent):
         name: str,
         description: str,
         analyzer_agent: Agent,
-        initial_planner_agent: Agent,
-        initial_coder_agent: Agent,
+        planner_agent: BaseAgent,
+        coder_agent: BaseAgent,
         verifier_agent: Agent,
         router_agent: Agent,
-        planner_agent: Agent,
-        coder_agent: Agent,
         finalyzer_agent: Agent,
     ):
         loop_agent = LoopAgent(
@@ -55,12 +52,10 @@ class DSStarAgent(BaseAgent):
             name=name,
             description=description,
             analyzer_agent=analyzer_agent,
-            initial_planner_agent=initial_planner_agent,
-            initial_coder_agent=initial_coder_agent,
-            verifier_agent=verifier_agent,
-            router_agent=router_agent,
             planner_agent=planner_agent,
             coder_agent=coder_agent,
+            verifier_agent=verifier_agent,
+            router_agent=router_agent,
             finalyzer_agent=finalyzer_agent,
             # workflow
             loop_agent=loop_agent,
@@ -80,12 +75,12 @@ class DSStarAgent(BaseAgent):
             async for event in self.analyzer_agent.run_async(ctx):
                 yield event
 
-        # Planning the next step
-        async for event in self.initial_planner_agent.run_async(ctx):
+        # Planning the initial step
+        async for event in self.planner_agent.run_async(ctx):
             yield event
 
-        # Coding the next step
-        async for event in self.initial_coder_agent.run_async(ctx):
+        # Coding the initial step
+        async for event in self.coder_agent.run_async(ctx):
             yield event
 
         # Running the loop
@@ -101,12 +96,10 @@ ds_star_agent = DSStarAgent(
     name="ds_star_agent",
     description="A DSStar agent that analyzes the data and plans the next step to answer the question.",
     analyzer_agent=analyzer_agent,
-    initial_planner_agent=initial_planner_agent,
-    initial_coder_agent=initial_coder_agent,
-    verifier_agent=verifier_agent,
-    router_agent=router_agent,
     planner_agent=planner_agent,
     coder_agent=coder_agent,
+    verifier_agent=verifier_agent,
+    router_agent=router_agent,
     finalyzer_agent=finalyzer_agent,
 )
 

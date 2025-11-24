@@ -57,5 +57,12 @@ def after_router_agent_callback(
     elif router_output.choice == "Modify Plan":
         plan_number = router_output.plan_number
         plans = state.get("plans")
-        state["plans"] = plans[: plan_number - 1]
-        yield types.Content(role="user", parts=[types.Part(text="Modify Plan")])
+
+        modified_plans = plans[: plan_number - 1]
+        if len(modified_plans) > 0:
+            state["current_plan"] = modified_plans[-1]
+        else:
+            state["current_plan"] = None
+
+        state["plans"] = modified_plans
+        return types.Content(role="user", parts=[types.Part(text="Modify Plan")])
