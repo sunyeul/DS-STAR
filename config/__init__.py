@@ -1,3 +1,3 @@
-from .config import AnalyzerAgentConfig, PathsConfig
+from .config import PathsConfig
 
-__all__ = ["PathsConfig", "AnalyzerAgentConfig"]
+__all__ = ["PathsConfig"]
