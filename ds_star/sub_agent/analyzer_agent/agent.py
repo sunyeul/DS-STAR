@@ -1,17 +1,16 @@
 from google.adk.agents import LlmAgent
 
-from config import AnalyzerAgentConfig, PathsConfig
+from config import PathsConfig
 
 from .callback import after_analyzer_agent_callback
 from .models import ExecutableCode
 
-agent_config = AnalyzerAgentConfig()
 paths_config = PathsConfig()
 
 # Agent Definition
 analyzer_agent = LlmAgent(
-    name=agent_config.agent_name,
-    model=agent_config.gemini_model,
+    name="analyzer_agent",
+    model="gemini-2.5-flash",
     instruction="""
 You are an expert data analysist.
 Generate a Python code that loads and describes the content of {filename}.
